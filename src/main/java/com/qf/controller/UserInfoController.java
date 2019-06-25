@@ -82,6 +82,7 @@ public class UserInfoController {
     @ResponseBody
     @RequestMapping("myTest")
     public Object myTest(){
+
         return "hello world";
     }
 
