@@ -1,7 +1,9 @@
 package com.qf.controller;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.qf.dto.UserInfoDto;
 import com.qf.pojo.UserInfo;
 import com.qf.service.UserService;
 import com.qf.tools.MD5Utils;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -85,5 +88,41 @@ public class UserInfoController {
 
         return "hello world";
     }
+
+    @ResponseBody
+    @RequestMapping("getUserData")
+    public Object getUserData(String callback){
+        //返回一个集合，包含两个对象，一个有效用户，一个无效用户
+        UserInfoDto userInfoDto = new UserInfoDto();
+        userInfoDto.setName("有效用户");
+        userInfoDto.setValue(2);
+        UserInfoDto userInfoDto1 = new UserInfoDto();
+        userInfoDto1.setName("无效用户");
+        userInfoDto1.setValue(4);
+        List<UserInfoDto> userInfoDtos = new ArrayList<UserInfoDto>();
+        userInfoDtos.add(userInfoDto);
+        userInfoDtos.add(userInfoDto1);
+
+        JSONPObject jsonpObject = new JSONPObject(callback,userInfoDtos);
+        return jsonpObject;
+    }
+
+    @ResponseBody
+    @RequestMapping("getUserDataOne")
+    public Object getUserDataOne(){
+        //返回一个集合，包含两个对象，一个有效用户，一个无效用户
+        UserInfoDto userInfoDto = new UserInfoDto();
+        userInfoDto.setName("有效用户");
+        userInfoDto.setValue(5);
+        UserInfoDto userInfoDto1 = new UserInfoDto();
+        userInfoDto1.setName("无效用户");
+        userInfoDto1.setValue(5);
+        List<UserInfoDto> userInfoDtos = new ArrayList<UserInfoDto>();
+        userInfoDtos.add(userInfoDto);
+        userInfoDtos.add(userInfoDto1);
+
+        return userInfoDtos;
+    }
+
 
 }

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="echarts/js/echarts.min.js"></script>
+    <script src="jquery/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+<!--定义一个盒子，一会echarts的图表就初始化到这个这个盒子里面-->
+<div id="pic1" style="width:400px;height:400px; margin: 20px auto;"></div>
+
+<script>
+    //创建echarts对象在哪个节点上
+    var myCharts1 = echarts.init(document.getElementById('pic1'));
+    //设置选项,option1对象
+    var option1 = {
+        //背景颜色
+        backgroundColor: 'white',
+        //标题
+        title: {
+            text: '用户有效性占比',
+            left: 'center',
+            top: 20,
+            textStyle: {
+                color: '#ccc'
+            }
+        },
+        //工具提示
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {d}%"
+        },
+        //系列属性
+        series : [
+            {
+                name:'用户有效性占比',//名称
+                type:'pie',//声明这是一个饼图
+                clockwise:'true',
+                startAngle:'0',
+                radius : ['50%', '60%'],//半径
+                center: ['50%', '50%'],//居中
+                //数据-->ajax
+                data:[
+                    {
+                        "name": "无效用户",
+                        "value": 1
+                    },
+                    {
+                        "name": "有效用户",
+                        "value": 7
+                    }
+                ],
+            }
+        ]
+
+    };
+    //如何从非同源的服务器取值(跨域请求)
+
+    $.ajax(
+        {
+            url: "http://localhost:8080/user/getUserDataOne",
+            type: "GET",
+            dataType: "json", //指定服务器返回的数据类型
+            success: function (data) {
+                console.log(data);
+                option1.series[0].data = data;
+                myCharts1.setOption(
+                    option1
+                    ,true);
+                //使用返回的数据填充myChart的选项
+//                myChart.setOption({
+//                    xAxis: {
+//                        data: data.categories
+//                    }, series: [{
+//                        // 根据名字对应到相应的系列
+//                        name: '销量',
+//                        data: data.data
+//                    }]
+//                })
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                console.log("服务器异常");
+                alert(XMLHttpRequest.status);//200 400  404  415  500
+                alert(XMLHttpRequest.readyState);//0-4
+                alert(XMLHttpRequest.responseText);//响应文本
+                alert(textStatus);
+                alert(errorThrown);
+                console.log(textStatus);
+            }
+        });
+
+
+    //将选项对象赋值给echarts对象。
+
+
+</script>
+</body>
+</html>
