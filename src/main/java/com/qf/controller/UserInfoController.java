@@ -78,4 +78,11 @@ public class UserInfoController {
         return userService.addUserInfo(userInfo);
     }
 
+
+    @ResponseBody
+    @RequestMapping("myTest")
+    public Object myTest(){
+        return "hello world";
+    }
+
 }
