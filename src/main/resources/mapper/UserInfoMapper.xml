@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.mapper.UserInfoMapper">
+    
+    <!--下面这种情况是一对多-->
+    <resultMap id="userInfoMap" type="com.qf.pojo.UserInfo">
+        <id column="USERID" property="userId"></id>
+        <result column="USERNAME" property="userName"></result>
+        <result column="PASSWORD" property="password"></result>
+        <result column="REGEMAIL" property="regEmail"></result>
+        <result column="MOBILE" property="mobile"></result>
+        <result column="ICON" property="icon"></result>
+    </resultMap>
+
+    
+    <select id="userLogin" resultType="com.qf.pojo.UserInfo" parameterType="com.qf.vo.UserInfoVo">
+        SELECT * from userinfo where username = #{userName} and password = #{password}
+    </select>
+
+    <select id="listUserInfoBy" resultType="com.qf.pojo.UserInfo" parameterType="com.qf.vo.UserInfoVo">
+        select * from userinfo
+        <where>
+            <if test="userName != null and userName !=''">
+                and username = #{userName}
+            </if>
+            <if test="regEmail != null and regEmail !=''">
+                and regemail like #{regEmail}
+            </if>
+            <if test="mobile != null and mobile !=''">
+                and mobile like #{mobile}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="listUserInfo" resultType="com.qf.pojo.UserInfo">
+        SELECT * from userinfo
+    </select>
+
+    <delete id="deleteUserInfoById" parameterType="int">
+        delete from userinfo where userId = #{userId}
+    </delete>
+
+    <select id="getUserInfoById" parameterType="int" resultType="com.qf.pojo.UserInfo">
+
+        SELECT * from userInfo where userId = #{userId}
+    </select>
+
+
+    <update id="updateUserInfo" parameterType="com.qf.pojo.UserInfo">
+        update userInfo
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName != null and userName != ''">
+                userName = #{userName},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="regEmail != null and regEmail != ''">
+                regEmail = #{regEmail},
+            </if>
+            <if test="mobile != null and mobile != ''">
+                mobile = #{mobile},
+            </if>
+            <if test="icon != null and icon != ''">
+                icon = #{icon},
+            </if>
+        </trim>
+        WHERE userId = #{userId}
+
+    </update>
+
+    <insert id="addUserInfo" parameterType="com.qf.pojo.UserInfo">
+        INSERT INTO userinfo VALUES (DEFAULT,#{userName},#{password},#{regEmail},#{mobile},#{icon})
+    </insert>
+</mapper>

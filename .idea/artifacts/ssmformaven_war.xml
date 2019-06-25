@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ssmformaven:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="ssmformaven-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="ssmformaven:war exploded" />
+    </root>
+  </artifact>
+</component>
